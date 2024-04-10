@@ -7,7 +7,7 @@
 #include "DroneGameGameModeBase.generated.h"
 
 /**
- * 
+ * DroneGame Base GameMode class 
  */
 UCLASS()
 class DRONEGAME_API ADroneGameGameModeBase : public AGameModeBase
