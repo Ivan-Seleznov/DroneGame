@@ -28,6 +28,7 @@ protected:
 	virtual void Input_Move(const FInputActionValue& Value);
 	virtual void Input_Look(const FInputActionValue& Value);
 	virtual void Input_Throttle(const FInputActionValue& Value);
+	virtual void Input_ChangeViewMode(const FInputActionValue& Value);
 	
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	UInputMappingContext* DefaultMappingContext;
@@ -39,4 +40,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	UInputAction* ThrottleInputAction;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	UInputAction* ChangeViewModeInputAction;
 };

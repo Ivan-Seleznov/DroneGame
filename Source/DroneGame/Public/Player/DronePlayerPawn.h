@@ -10,6 +10,7 @@ class UCameraComponent;
 class USpringArmComponent;
 class UBindInputComponent;
 
+
 UCLASS()
 class DRONEGAME_API ADronePlayerPawn : public ADronePawnBase
 {
@@ -19,7 +20,6 @@ public:
 	ADronePlayerPawn();
 	
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
-	
 protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	TObjectPtr<USpringArmComponent> SpringArmComponent;

@@ -2,11 +2,11 @@
 
 
 #include "Input/BindInputComponent.h"
-
-#include "AnimationCoreLibrary.h"
+#include "DroneGameLogs.h"
 #include "EnhancedInputSubsystems.h"
 #include "Movement/DroneMovementComponent.h"
 #include "EnhancedInputComponent.h"
+#include "Camera/DronePlayerCameraManager.h"
 #include "Pawns/DronePawnBase.h"
 
 UBindInputComponent::UBindInputComponent(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
@@ -45,6 +45,7 @@ void UBindInputComponent::SetupPlayerInput(UInputComponent* PlayerInputComponent
 	EnhancedInputComponent->BindAction(MoveInputAction,ETriggerEvent::Triggered,this,&ThisClass::Input_Move);
 	EnhancedInputComponent->BindAction(LookInputAction,ETriggerEvent::Triggered,this,&ThisClass::Input_Look);
 	EnhancedInputComponent->BindAction(ThrottleInputAction,ETriggerEvent::Triggered,this,&ThisClass::Input_Throttle);
+	EnhancedInputComponent->BindAction(ChangeViewModeInputAction,ETriggerEvent::Triggered,this,&ThisClass::Input_ChangeViewMode);
 }
 
 void UBindInputComponent::Input_Move(const FInputActionValue& Value)
@@ -73,15 +74,14 @@ void UBindInputComponent::Input_Look(const FInputActionValue& Value)
 		return;
 	}
 	
-	const FVector2D LookVector = Value.Get<FVector2D>();
 	UDroneMovementComponent* DroneMovementComp = Pawn->GetDroneMovementComponent();
 	if (!DroneMovementComp)
 	{
 		return;
 	}
 	
-	const FVector MovementVector = Value.Get<FVector>();
-	DroneMovementComp->AddDroneMovementInput(MovementVector);
+	const FVector LookVector = Value.Get<FVector>();
+	DroneMovementComp->AddDroneMovementInput(LookVector);
 }
 
 void UBindInputComponent::Input_Throttle(const FInputActionValue& Value)
@@ -100,4 +100,29 @@ void UBindInputComponent::Input_Throttle(const FInputActionValue& Value)
 	}
 
 	DroneMovementComp->AddDroneThrottle(Throttle);
+}
+
+void UBindInputComponent::Input_ChangeViewMode(const FInputActionValue& Value)
+{
+	const APlayerController* PlayerController = GetController<APlayerController>();
+	if (!PlayerController)
+	{
+		return;
+	}
+
+	ADronePlayerCameraManager* DronePlayerCameraManager = Cast<ADronePlayerCameraManager>(PlayerController->PlayerCameraManager);
+	if (!DronePlayerCameraManager)
+	{
+		DEBUG_LOG("Input_ChangeViewMode requires ADronePlayerCameraManager");
+		return;
+	}
+
+	if (DronePlayerCameraManager->GetCurrentViewMode() == EPlayerViewMode::FirstPerson)
+	{
+		DronePlayerCameraManager->ChangeViewMode(EPlayerViewMode::ThirdPerson);
+	}
+	else
+	{
+		DronePlayerCameraManager->ChangeViewMode(EPlayerViewMode::FirstPerson);
+	}
 }
