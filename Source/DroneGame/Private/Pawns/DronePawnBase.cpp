@@ -25,8 +25,6 @@ ADronePawnBase::ADronePawnBase()
 void ADronePawnBase::BeginPlay()
 {
 	Super::BeginPlay();
-
-	DroneMovementComponent->InitDroneMovement(BoxComponent,PhysicsThruster);
 }
 
 void ADronePawnBase::Tick(float DeltaTime)

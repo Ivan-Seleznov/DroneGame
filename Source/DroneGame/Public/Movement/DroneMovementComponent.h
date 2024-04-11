@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/BoxComponent.h"
 #include "Components/PawnComponent.h"
 #include "Pawns/DronePawnBase.h"
 #include "DroneMovementComponent.generated.h"
@@ -23,15 +22,13 @@ public:
 	virtual void AddDroneMovementInput(const FVector& Value);
 	UFUNCTION(BlueprintCallable)
     virtual void AddDroneThrottle(float Value);
-
-	virtual void InitDroneMovement(UPrimitiveComponent* InMoveComp,UPhysicsThrusterComponent* InThrusterComp);
 	
 	void SetComponentToMove(UPrimitiveComponent* InComp);
 	void SetThrusterComponent(UPhysicsThrusterComponent* InComp);
 
 	UFUNCTION(BlueprintPure)
 	float GetThrottlePercent() const;
-	
+
 protected:
 	virtual void BeginPlay() override;
 	

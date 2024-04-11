@@ -25,19 +25,6 @@ void UDroneMovementComponent::AddDroneThrottle(float Value)
 	}
 }
 
-void UDroneMovementComponent::InitDroneMovement(UPrimitiveComponent* InMoveComp,
-	UPhysicsThrusterComponent* InThrusterComp)
-{
-	if (!InMoveComp || !InThrusterComp)
-	{
-		//TODO: add log
-		return;
-	}
-
-	SetComponentToMove(InMoveComp);
-	SetThrusterComponent(InThrusterComp);
-}
-
 void UDroneMovementComponent::SetComponentToMove(UPrimitiveComponent* InComp)
 {
 	if (!InComp->IsSimulatingPhysics())
@@ -59,6 +46,11 @@ void UDroneMovementComponent::SetThrusterComponent(UPhysicsThrusterComponent* In
 
 float UDroneMovementComponent::GetThrottlePercent() const
 {
+	if (!ComponentToMove)
+	{
+		return 0.f;
+	}
+	
 	const float MaxValue = MaxThrottle * ComponentToMove->GetMass();
 	
 	const float Range = MaxValue - MinThrottle;
@@ -73,6 +65,31 @@ float UDroneMovementComponent::GetThrottlePercent() const
 void UDroneMovementComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	const APawn* OwningPawn = GetPawn<APawn>();
+	check(OwningPawn);
+	
+	UPrimitiveComponent* RootComp = Cast<UPrimitiveComponent>(OwningPawn->GetRootComponent());
+	if (RootComp)
+	{
+		SetComponentToMove(RootComp);
+	}
+	else
+	{
+		//TODO add log
+	}
+	
+	UPhysicsThrusterComponent* ThrusterComp = OwningPawn->FindComponentByClass<UPhysicsThrusterComponent>();
+	if (ThrusterComp)
+	{
+		SetThrusterComponent(ThrusterComp);
+	}
+	else
+	{
+		//TODO add log
+	}
+
+	
 }
 
 void UDroneMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType,
