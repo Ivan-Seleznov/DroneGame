@@ -21,7 +21,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	FORCEINLINE UDroneMovementComponent* GetDroneMovementComponent() const {return DroneMovementComponent;}
-	
 protected:
 	virtual void BeginPlay() override;
 

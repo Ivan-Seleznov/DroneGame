@@ -2,6 +2,7 @@
 
 #include "Movement/DroneMovementComponent.h"
 
+#include "DroneGameLogs.h"
 #include "PhysicsEngine/PhysicsThrusterComponent.h"
 
 UDroneMovementComponent::UDroneMovementComponent(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
@@ -29,7 +30,7 @@ void UDroneMovementComponent::SetComponentToMove(UPrimitiveComponent* InComp)
 {
 	if (!InComp->IsSimulatingPhysics())
 	{
-		//TODO: warning logging 
+		DEBUG_LOG("ComponentToMove should simulate physics");
 	}
 	ComponentToMove = InComp;
 }
@@ -62,6 +63,21 @@ float UDroneMovementComponent::GetThrottlePercent() const
 	return (CurrentThrottle - MinThrottle) / Range;
 }
 
+float UDroneMovementComponent::GetVelocityLength() const
+{
+	return ComponentToMove ? ComponentToMove->GetComponentVelocity().Length() : 0.f;
+}
+
+FVector UDroneMovementComponent::GetVelocity() const
+{
+	return ComponentToMove ? ComponentToMove->GetComponentVelocity() : FVector(0.f,0.f,0.f);
+}
+
+bool UDroneMovementComponent::IsVelocityDown() const
+{
+	return ComponentToMove ? (ComponentToMove->GetComponentVelocity() | FVector::DownVector) < 0.f : false;
+}
+
 void UDroneMovementComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -76,7 +92,7 @@ void UDroneMovementComponent::BeginPlay()
 	}
 	else
 	{
-		//TODO add log
+		DEBUG_LOG("UPrimitiveComponent is null");
 	}
 	
 	UPhysicsThrusterComponent* ThrusterComp = OwningPawn->FindComponentByClass<UPhysicsThrusterComponent>();
@@ -86,7 +102,7 @@ void UDroneMovementComponent::BeginPlay()
 	}
 	else
 	{
-		//TODO add log
+		DEBUG_LOG("UPhysicsThrusterComponent is null");
 	}
 
 	
@@ -99,7 +115,7 @@ void UDroneMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType
 	
 	if (!ThrusterComponent || !ComponentToMove)
 	{
-		//TODO: add log
+		DEBUG_LOG("UDroneMovementComponent requires ThrusterComponent and ComponentToMove");
 		return;
 	}
 	
@@ -116,5 +132,7 @@ void UDroneMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType
 	
 	ThrottleInput = 0.f;
 	MoveInput = FVector::ZeroVector;
+
+	
 }
 

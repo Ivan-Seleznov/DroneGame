@@ -25,10 +25,20 @@ public:
 	
 	void SetComponentToMove(UPrimitiveComponent* InComp);
 	void SetThrusterComponent(UPhysicsThrusterComponent* InComp);
-
+	
+	UPrimitiveComponent* GetMovableComponent() const {return ComponentToMove;}
+	
 	UFUNCTION(BlueprintPure)
 	float GetThrottlePercent() const;
+	
+	UFUNCTION(BlueprintPure)
+	float GetVelocityLength() const;
 
+	UFUNCTION(BlueprintPure)
+	FVector GetVelocity() const;
+
+	UFUNCTION(BlueprintPure)
+	bool IsVelocityDown() const;
 protected:
 	virtual void BeginPlay() override;
 	
