@@ -8,6 +8,7 @@
 #include "EnhancedInputComponent.h"
 #include "Camera/DronePlayerCameraManager.h"
 #include "Pawns/DronePawnBase.h"
+#include "Player/DronePlayerPawn.h"
 
 UBindInputComponent::UBindInputComponent(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -46,6 +47,7 @@ void UBindInputComponent::SetupPlayerInput(UInputComponent* PlayerInputComponent
 	EnhancedInputComponent->BindAction(LookInputAction,ETriggerEvent::Triggered,this,&ThisClass::Input_Look);
 	EnhancedInputComponent->BindAction(ThrottleInputAction,ETriggerEvent::Triggered,this,&ThisClass::Input_Throttle);
 	EnhancedInputComponent->BindAction(ChangeViewModeInputAction,ETriggerEvent::Triggered,this,&ThisClass::Input_ChangeViewMode);
+	EnhancedInputComponent->BindAction(FireInputAction,ETriggerEvent::Triggered,this,&ThisClass::Input_Fire);
 }
 
 void UBindInputComponent::Input_Move(const FInputActionValue& Value)
@@ -102,7 +104,7 @@ void UBindInputComponent::Input_Throttle(const FInputActionValue& Value)
 	DroneMovementComp->AddDroneThrottle(Throttle);
 }
 
-void UBindInputComponent::Input_ChangeViewMode(const FInputActionValue& Value)
+void UBindInputComponent::Input_ChangeViewMode()
 {
 	const APlayerController* PlayerController = GetController<APlayerController>();
 	if (!PlayerController)
@@ -125,4 +127,15 @@ void UBindInputComponent::Input_ChangeViewMode(const FInputActionValue& Value)
 	{
 		DronePlayerCameraManager->ChangeViewMode(EPlayerViewMode::FirstPerson);
 	}
+}
+
+void UBindInputComponent::Input_Fire()
+{
+	ADronePlayerPawn* DronePlayerPawn = GetPawn<ADronePlayerPawn>();
+	if (!DronePlayerPawn)
+	{
+		return;
+	}
+	
+	DronePlayerPawn->Fire();
 }

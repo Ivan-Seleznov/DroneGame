@@ -7,6 +7,7 @@
 #include "Pawns/DronePawnBase.h"
 #include "DronePlayerPawn.generated.h"
 
+class UProjectileFireComponent;
 class UDroneDamageComponent;
 class UHealthComponent;
 class UCameraComponent;
@@ -24,6 +25,8 @@ public:
 	
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
+	virtual void Fire();
+	
 	UFUNCTION(BlueprintCallable)
 	virtual void ReceiveDamage(float DamageToReceive) override;
 	UFUNCTION(BlueprintCallable)
@@ -45,4 +48,11 @@ protected:
 	TObjectPtr<UHealthComponent> HealthComponent;
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	TObjectPtr<UDroneDamageComponent> DamageComponent;
+
+	UPROPERTY(EditDefaultsOnly, meta=(AllowPrivateAccess=true))
+	TObjectPtr<UProjectileFireComponent> ProjectileFireComponent;
+
+protected:
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite)
+	FVector FireOffset;
 };

@@ -1,7 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Player/DronePlayerPawn.h"
+
+#include "DroneGameLogs.h"
 #include "Camera/CameraComponent.h"
+#include "FireSystem/ProjectileBase.h"
+#include "FireSystem/ProjectileFireComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Input/BindInputComponent.h"
 #include "Pawns/DroneDamageComponent.h"
@@ -21,6 +25,8 @@ ADronePlayerPawn::ADronePlayerPawn()
 	
 	DamageComponent = CreateDefaultSubobject<UDroneDamageComponent>("DamageComponent");
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>("HealthComponent");
+
+	ProjectileFireComponent = CreateDefaultSubobject<UProjectileFireComponent>("ProjectileFireComponent");
 }
 
 void ADronePlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -33,6 +39,20 @@ void ADronePlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	{
 		BindInputComponent->SetupPlayerInput(PlayerInputComponent);
 	}
+}
+
+void ADronePlayerPawn::Fire()
+{
+	check(RootComponent);
+	check(CameraComponent);
+	
+	if (!ProjectileFireComponent->GetProjectileClass())
+	{
+		DEBUG_ERROR_LOG("Projectile class has to be set")
+		return;
+	}
+
+	ProjectileFireComponent->TryFire(RootComponent->GetComponentLocation() + FireOffset,CameraComponent->GetForwardVector());
 }
 
 void ADronePlayerPawn::ReceiveDamage(float DamageToReceive)
