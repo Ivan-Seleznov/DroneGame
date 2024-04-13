@@ -52,7 +52,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, meta=(AllowPrivateAccess=true))
 	TObjectPtr<UProjectileFireComponent> ProjectileFireComponent;
 
-protected:
-	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite)
-	FVector FireOffset;
+	UPROPERTY(EditDefaultsOnly, meta=(AllowPrivateAccess=true))
+	TObjectPtr<USceneComponent> ProjectileSpawnPoint;
 };

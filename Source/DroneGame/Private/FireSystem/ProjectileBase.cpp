@@ -34,6 +34,7 @@ void AProjectileBase::BeginPlay()
 	
 	if (SphereCollisionComponent)
 	{
+		SphereCollisionComponent->IgnoreActorWhenMoving(GetOwner(),true);
 		SphereCollisionComponent->OnComponentHit.AddDynamic(this,&ThisClass::OnProjectileHit);
 	}
 }
@@ -41,14 +42,14 @@ void AProjectileBase::BeginPlay()
 void AProjectileBase::OnProjectileHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
-	if (OtherActor != this || OtherActor != GetOwner())
+	if (OtherActor != this && OtherActor != GetOwner())
 	{
 		if (IDamageablePawn* DamageablePawn = Cast<IDamageablePawn>(OtherActor))
-		{
-			DamageablePawn->ReceiveDamage(ProjectileDamage);
-		}
+        {
+        	DamageablePawn->ReceiveDamage(ProjectileDamage);
+        }
 	}
-
+	
 	if (HitParticles && Hit.IsValidBlockingHit())
 	{
 		FTransform SpawnTransform;

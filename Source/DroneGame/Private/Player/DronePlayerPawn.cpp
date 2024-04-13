@@ -14,6 +14,9 @@
 ADronePlayerPawn::ADronePlayerPawn()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	ProjectileSpawnPoint = CreateDefaultSubobject<USceneComponent>("ProjectileSpawnPoint");
+	ProjectileSpawnPoint->SetupAttachment(SkeletalMesh);
 	
 	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SprintArmComponent");
 	SpringArmComponent->SetupAttachment(RootComponent);
@@ -52,7 +55,7 @@ void ADronePlayerPawn::Fire()
 		return;
 	}
 
-	ProjectileFireComponent->TryFire(RootComponent->GetComponentLocation() + FireOffset,CameraComponent->GetForwardVector());
+	ProjectileFireComponent->TryFire(ProjectileSpawnPoint->GetComponentLocation(),CameraComponent->GetForwardVector());
 }
 
 void ADronePlayerPawn::ReceiveDamage(float DamageToReceive)
