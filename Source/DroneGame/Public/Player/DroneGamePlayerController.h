@@ -35,8 +35,13 @@ public:
 	
 	UFUNCTION(BlueprintPure)
 	bool CanRespawnPlayer() const;
-	
+
+	UFUNCTION(BlueprintPure)
+	float GetDeathTimerRemaining() const;
+	UFUNCTION(BlueprintPure)
+	bool IsDeathTimerActive() const;
 protected:
+	virtual void BeginPlay() override;
 	void OnDeathTimerFinished();
 
 	bool ReloadLevel();
@@ -49,4 +54,14 @@ protected:
 private:
 	UPROPERTY()
 	FTimerHandle DeathTimerHandle;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,meta=(AllowPrivateAccess))
+	TSubclassOf<UUserWidget> PlayerHUDWidgetClass;
+	UPROPERTY()
+	UUserWidget* PlayerHUDWidget;
+	
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,meta=(AllowPrivateAccess))
+	TSubclassOf<UUserWidget> DeathWidgetClass;
+	UPROPERTY()
+	UUserWidget* DeathWidget;
 };

@@ -3,6 +3,7 @@
 
 #include "Player/DroneGamePlayerController.h"
 #include "DroneGameLogs.h"
+#include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
 
 void ADroneGamePlayerController::StartDeath()
@@ -14,6 +15,17 @@ void ADroneGamePlayerController::StartDeath()
 		return;
 	}
 
+	if (PlayerHUDWidget)
+	{
+		PlayerHUDWidget->RemoveFromParent();
+	}
+
+	if (DeathWidgetClass)
+	{
+		DeathWidget = CreateWidget<UUserWidget>(this,DeathWidgetClass);
+		DeathWidget->AddToViewport();
+	}
+	
 	APawn* DeadPawn = GetPawn();
 
 	if (OnPawnDeathStartedDelegate.IsBound())
@@ -26,6 +38,28 @@ void ADroneGamePlayerController::StartDeath()
 bool ADroneGamePlayerController::CanRespawnPlayer() const
 {
 	return !GetWorld()->GetTimerManager().IsTimerActive(DeathTimerHandle);
+}
+
+float ADroneGamePlayerController::GetDeathTimerRemaining() const
+{
+	return GetWorld()->GetTimerManager().GetTimerRemaining(DeathTimerHandle);
+}
+
+bool ADroneGamePlayerController::IsDeathTimerActive() const
+{
+	return GetWorld()->GetTimerManager().IsTimerActive(DeathTimerHandle);
+}
+
+void ADroneGamePlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (PlayerHUDWidgetClass)
+	{
+		PlayerHUDWidget = CreateWidget<UUserWidget>(this,PlayerHUDWidgetClass);
+		PlayerHUDWidget->AddToViewport();
+	}
+
 }
 
 void ADroneGamePlayerController::OnDeathTimerFinished()
@@ -53,6 +87,10 @@ bool ADroneGamePlayerController::ReloadLevel()
 		return false;
 	}
 	
+	if (DeathWidget)
+	{
+		DeathWidget->RemoveFromParent();
+	}
 	UGameplayStatics::OpenLevel(this,FName(UGameplayStatics::GetCurrentLevelName(this)));
 	
 	return true;

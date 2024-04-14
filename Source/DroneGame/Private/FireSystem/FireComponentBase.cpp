@@ -14,7 +14,7 @@ void UFireComponentBase::Fire(const FVector& StartLocation, const FVector& Direc
 
 void UFireComponentBase::AddAmmo(float AmmoToAdd)
 {
-	CurrentAmmoCount += AmmoToAdd;
+	SetAmmoCount(CurrentAmmoCount + AmmoToAdd);
 }
 
 bool UFireComponentBase::IsEnoughAmmo() const
@@ -26,7 +26,7 @@ void UFireComponentBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	CurrentAmmoCount = StartAmmoCount >= 0 ? StartAmmoCount : 0;
+	SetAmmoCount(StartAmmoCount >= 0 ? StartAmmoCount : 0);
 }
 
 bool UFireComponentBase::CanFire() const
@@ -76,9 +76,19 @@ void UFireComponentBase::UpdateFiringTime()
 
 void UFireComponentBase::UpdateAmmoCount()
 {
-	const int32 PrevAmmoCount = CurrentAmmoCount;
-	CurrentAmmoCount--;
+	SetAmmoCount(CurrentAmmoCount - 1);
+}
 
+void UFireComponentBase::SetAmmoCount(int32 NewAmmoCount)
+{
+	const int32 PrevAmmoCount = CurrentAmmoCount;
+	
+	CurrentAmmoCount = NewAmmoCount;
+	if (CurrentAmmoCount < 0)
+	{
+		CurrentAmmoCount = 0;
+	}
+	
 	if (OnAmmoCountChangedDelegate.IsBound())
 	{
 		OnAmmoCountChangedDelegate.Broadcast(PrevAmmoCount,CurrentAmmoCount);

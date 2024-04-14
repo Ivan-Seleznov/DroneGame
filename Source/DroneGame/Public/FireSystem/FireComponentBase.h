@@ -54,6 +54,8 @@ protected:
 private:
 	void UpdateFiringTime();
 	void UpdateAmmoCount();
+
+	void SetAmmoCount(int32 NewAmmoCount);
 	
 	float TimeLastFired;
 
