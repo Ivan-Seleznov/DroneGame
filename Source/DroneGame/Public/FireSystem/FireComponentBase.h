@@ -40,7 +40,16 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AddAmmo(float AmmoToAdd);
 
+	UFUNCTION(BlueprintPure)
 	bool IsEnoughAmmo() const;
+	
+	UFUNCTION(BlueprintCallable)
+	void DisableFire() {bDisableFire = true;}
+	UFUNCTION(BlueprintCallable)
+	void EnableFire() {bDisableFire = false;}
+	
+	UFUNCTION(BlueprintPure)
+	bool GetDisableFire() const {return bDisableFire;}
 protected:
 	virtual void BeginPlay() override;
 
@@ -64,5 +73,8 @@ private:
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,meta=(AllowPrivateAccess))
 	int32 CurrentAmmoCount = 0;
+
+	UPROPERTY()
+	bool bDisableFire = false;
 };
  

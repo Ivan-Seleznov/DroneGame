@@ -31,7 +31,7 @@ void UFireComponentBase::BeginPlay()
 
 bool UFireComponentBase::CanFire() const
 {
-	return IsFireRateValid() && IsEnoughAmmo();
+	return IsFireRateValid() && IsEnoughAmmo() && !bDisableFire;
 }
 
 bool UFireComponentBase::IsFireRateValid() const

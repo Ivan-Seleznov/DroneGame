@@ -100,6 +100,12 @@ void ADronePlayerPawn::StartDeath()
 
 	check(DroneMovementComponent);
 	DroneMovementComponent->DisableAllMovement();
+
+	check(ProjectileFireComponent);
+	ProjectileFireComponent->DisableFire();
+
+	check(InteractComponent);
+	InteractComponent->SetCanInteract(false);
 	
 	bIsDead = true;
 	DroneGamePlayerController->StartDeath();

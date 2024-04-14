@@ -152,7 +152,7 @@ void UDroneMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType
 	ComponentToMove->AddTorqueInDegrees(ComponentToMove->GetRightVector() * (MoveInput.Y * RotationSpeed),NAME_None,true);
 	ComponentToMove->AddTorqueInDegrees(ComponentToMove->GetUpVector() * (MoveInput.Z * RotationSpeed),NAME_None,true);
 	
+
 	ThrottleInput = 0.f;
 	MoveInput = FVector::ZeroVector;
 }
-
