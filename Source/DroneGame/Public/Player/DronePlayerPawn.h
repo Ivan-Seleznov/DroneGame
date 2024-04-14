@@ -1,0 +1,90 @@
+﻿// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "Pawns/DamagablePawn.h"
+#include "Pawns/DronePawnBase.h"
+#include "DronePlayerPawn.generated.h"
+
+class UProjectileFireComponent;
+class UDroneDamageComponent;
+class UHealthComponent;
+class UCameraComponent;
+class USpringArmComponent;
+class UBindInputComponent;
+class UInteractComponent;
+
+UCLASS()
+class DRONEGAME_API ADronePlayerPawn : public ADronePawnBase, public IDamageablePawn
+{
+	GENERATED_BODY()
+
+public:
+	ADronePlayerPawn();
+	
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+
+	virtual void Fire();
+	
+	UFUNCTION(BlueprintCallable)
+	virtual void ReceiveDamage(float DamageToReceive,AActor* DamageCauser) override;
+	UFUNCTION(BlueprintCallable)
+	virtual UDamageComponent* GetDamageComponent() const override;
+	
+	UFUNCTION(BlueprintPure)
+	virtual bool IsDead() const override {return bIsDead;}
+
+protected:
+	virtual void BeginPlay() override;
+
+	virtual void StartDeath();
+	
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	TObjectPtr<USpringArmComponent> SpringArmComponent;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	TObjectPtr<UCameraComponent> CameraComponent;
+	
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	TObjectPtr<UBindInputComponent> BindInputComponent;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	TObjectPtr<UHealthComponent> HealthComponent;
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	TObjectPtr<UDroneDamageComponent> DamageComponent;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	TObjectPtr<UProjectileFireComponent> ProjectileFireComponent;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	TObjectPtr<USceneComponent> ProjectileSpawnPoint;
+	
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	TObjectPtr<UInteractComponent> InteractComponent;
+	
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	float DeathTimerTime = 5.f;
+private:
+	UFUNCTION()
+	void OnOutOfHealth(float OldHealth, APawn* OwningPawn);
+
+	bool bIsDead = false;
+
+	
+	/*Debug Commands*/
+	UFUNCTION(Exec,Category="Commands")
+	void KillYourself();
+	
+	UFUNCTION(Exec,Category="Commands")
+	void AddHealth(float HealthToAdd);
+	UFUNCTION(Exec,Category="Commands")
+	void DisableHealth();
+	UFUNCTION(Exec,Category="Commands")
+	void EnableHealth();
+
+	UFUNCTION(Exec,Category="Commands")
+	void DisableAmmoCount();
+	UFUNCTION(Exec,Category="Commands")
+	void EnableAmmoCount();
+};
