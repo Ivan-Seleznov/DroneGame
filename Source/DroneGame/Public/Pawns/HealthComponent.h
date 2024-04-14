@@ -32,12 +32,18 @@ public:
 	float GetHealthPercentage() const;
 
 	bool IsOutOfHealth() const {return bIsOutOfHealth;}
+
+	bool GetEnableHealth() const {return bEnableHealth;}
+	void SetEnableHealth(bool bNewEnableHealth) {bEnableHealth = bNewEnableHealth;}
 protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	float MaxHealth = 100.f;
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	float DefaultHealth = 100.f;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite)
+	bool bEnableHealth = true;
 private:
 	void SetHealth(float NewHealth);
 	

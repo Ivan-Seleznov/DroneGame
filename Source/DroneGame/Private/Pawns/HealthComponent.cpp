@@ -36,6 +36,11 @@ float UHealthComponent::GetHealthPercentage() const
 
 void UHealthComponent::SetHealth(float NewHealth)
 {
+	if (!bEnableHealth)
+	{
+		return;
+	}
+	
 	const float PrevHealth = CurrentHealth;
 	
 	CurrentHealth = FMath::Clamp(NewHealth,0.f,MaxHealth);

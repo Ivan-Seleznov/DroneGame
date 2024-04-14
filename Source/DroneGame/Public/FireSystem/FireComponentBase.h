@@ -31,7 +31,7 @@ public:
 	bool TryFire(const FVector& Start, const FVector& End);
 
 	UFUNCTION(BlueprintCallable)
-	void SetShouldUseAmmo(bool bNewShouldUseAmo) {bShouldUseAmmo = true;}
+	void SetShouldUseAmmo(bool bNewShouldUseAmo) {bShouldUseAmmo = bNewShouldUseAmo;}
 
 	UFUNCTION(BlueprintPure)
 	bool GetShouldUseAmmo() const {return bShouldUseAmmo;}

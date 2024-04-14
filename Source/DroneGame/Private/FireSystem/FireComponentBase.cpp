@@ -81,6 +81,11 @@ void UFireComponentBase::UpdateAmmoCount()
 
 void UFireComponentBase::SetAmmoCount(int32 NewAmmoCount)
 {
+	if (!bShouldUseAmmo)
+	{
+		return;
+	}
+	
 	const int32 PrevAmmoCount = CurrentAmmoCount;
 	
 	CurrentAmmoCount = NewAmmoCount;

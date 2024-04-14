@@ -34,6 +34,7 @@ public:
 	
 	UFUNCTION(BlueprintPure)
 	virtual bool IsDead() const override {return bIsDead;}
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -69,4 +70,21 @@ private:
 	void OnOutOfHealth(float OldHealth, APawn* OwningPawn);
 
 	bool bIsDead = false;
+
+	
+	/*Debug Commands*/
+	UFUNCTION(Exec,Category="Commands")
+	void KillYourself();
+	
+	UFUNCTION(Exec,Category="Commands")
+	void AddHealth(float HealthToAdd);
+	UFUNCTION(Exec,Category="Commands")
+	void DisableHealth();
+	UFUNCTION(Exec,Category="Commands")
+	void EnableHealth();
+
+	UFUNCTION(Exec,Category="Commands")
+	void DisableAmmoCount();
+	UFUNCTION(Exec,Category="Commands")
+	void EnableAmmoCount();
 };

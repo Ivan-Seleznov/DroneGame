@@ -92,12 +92,17 @@ void ADronePlayerPawn::BeginPlay()
 
 void ADronePlayerPawn::StartDeath()
 {
+	if (bIsDead)
+	{
+		return;
+	}
+	
 	ADroneGamePlayerController* DroneGamePlayerController = Cast<ADroneGamePlayerController>(GetController());
 	if (!DroneGamePlayerController)
 	{
 		return;
 	}
-
+	
 	check(DroneMovementComponent);
 	DroneMovementComponent->DisableAllMovement();
 
@@ -114,4 +119,52 @@ void ADronePlayerPawn::StartDeath()
 void ADronePlayerPawn::OnOutOfHealth(float OldHealth, APawn* OwningPawn)
 {
 	StartDeath();
+}
+
+
+
+/*Debug Commands*/
+void ADronePlayerPawn::KillYourself()
+{
+	StartDeath();
+}
+
+void ADronePlayerPawn::AddHealth(float HealthToAdd)
+{
+	if (HealthComponent)
+	{
+		HealthComponent->AddHealth(HealthToAdd);
+	}
+}
+
+void ADronePlayerPawn::DisableHealth()
+{
+	if (HealthComponent)
+	{
+		HealthComponent->SetEnableHealth(false);
+	}
+}
+
+void ADronePlayerPawn::EnableHealth()
+{
+	if (HealthComponent)
+	{
+		HealthComponent->SetEnableHealth(true);
+	}
+}
+
+void ADronePlayerPawn::DisableAmmoCount()
+{
+	if (ProjectileFireComponent)
+	{
+		ProjectileFireComponent->SetShouldUseAmmo(false);
+	}
+}
+
+void ADronePlayerPawn::EnableAmmoCount()
+{
+	if (ProjectileFireComponent)
+	{
+		ProjectileFireComponent->SetShouldUseAmmo(true);
+	}
 }

@@ -37,7 +37,7 @@ void UDroneDamageComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	{
 		if (MaxFlippedOverTime > 0.f && FlippedOverTimeElapsed >= MaxFlippedOverTime)
 		{
-			DEBUG_SLOG("Received Max flipped over damage", FColor::Blue);
+			//DEBUG_SLOG("Received Max damage", FColor::Blue);
 			ReceiveMaxDamage();
 		}
 		FlippedOverTimeElapsed += DeltaTime;
