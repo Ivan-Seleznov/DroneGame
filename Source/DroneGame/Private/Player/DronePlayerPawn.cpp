@@ -14,6 +14,7 @@
 #include "Movement/DroneMovementComponent.h"
 #include "Pawns/DroneDamageComponent.h"
 #include "Pawns/HealthComponent.h"
+#include "Pawns/InteractComponent.h"
 #include "Player/DroneGamePlayerController.h"
 
 ADronePlayerPawn::ADronePlayerPawn()
@@ -35,6 +36,8 @@ ADronePlayerPawn::ADronePlayerPawn()
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>("HealthComponent");
 
 	ProjectileFireComponent = CreateDefaultSubobject<UProjectileFireComponent>("ProjectileFireComponent");
+
+	InteractComponent = CreateDefaultSubobject<UInteractComponent>("InteractComponent");
 }
 
 void ADronePlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -74,10 +77,6 @@ void ADronePlayerPawn::ReceiveDamage(float DamageToReceive,AActor* DamageCauser)
 UDamageComponent* ADronePlayerPawn::GetDamageComponent() const
 {
 	return DamageComponent;
-}
-
-void ADronePlayerPawn::OnDeathFinished()
-{
 }
 
 void ADronePlayerPawn::BeginPlay()

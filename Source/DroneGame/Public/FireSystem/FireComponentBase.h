@@ -6,6 +6,8 @@
 #include "Components/PawnComponent.h"
 #include "FireComponentBase.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAmmoCountChangedDelegate,int32, PrevAmmoCount, int32, CurrentAmmoCount);
+
 UCLASS(Abstract)
 class DRONEGAME_API UFireComponentBase : public UPawnComponent
 {
@@ -14,6 +16,9 @@ class DRONEGAME_API UFireComponentBase : public UPawnComponent
 public:
 	UFireComponentBase(const FObjectInitializer& ObjectInitializer);
 
+	UPROPERTY(BlueprintAssignable)
+	mutable FOnAmmoCountChangedDelegate OnAmmoCountChangedDelegate;
+	
 	UFUNCTION(BlueprintPure)
 	virtual bool CanFire() const;
 
@@ -44,11 +49,12 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	float FireRate = 2.0f;
 
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, meta=(AllowPrivateAccess))
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, meta=(EditCondition="bShouldUseAmmo"))
 	int32 StartAmmoCount = 100;
 private:
 	void UpdateFiringTime();
-
+	void UpdateAmmoCount();
+	
 	float TimeLastFired;
 
 	UPROPERTY(EditDefaultsOnly,meta=(AllowPrivateAccess))

@@ -39,5 +39,5 @@ protected:
 	float ProjectileDamage = 50.f;
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
-	UParticleSystem* HitParticles;
+	TObjectPtr<UParticleSystem> HitParticles;
 };

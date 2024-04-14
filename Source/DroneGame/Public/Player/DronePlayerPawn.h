@@ -13,7 +13,7 @@ class UHealthComponent;
 class UCameraComponent;
 class USpringArmComponent;
 class UBindInputComponent;
-
+class UInteractComponent;
 
 UCLASS()
 class DRONEGAME_API ADronePlayerPawn : public ADronePawnBase, public IDamageablePawn
@@ -34,8 +34,6 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	bool IsDead() const {return bIsDead;}
-	
-	virtual void OnDeathFinished();
 protected:
 	virtual void BeginPlay() override;
 
@@ -55,12 +53,15 @@ protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	TObjectPtr<UDroneDamageComponent> DamageComponent;
 
-	UPROPERTY(EditDefaultsOnly, meta=(AllowPrivateAccess=true))
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	TObjectPtr<UProjectileFireComponent> ProjectileFireComponent;
 
-	UPROPERTY(EditDefaultsOnly, meta=(AllowPrivateAccess=true))
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	TObjectPtr<USceneComponent> ProjectileSpawnPoint;
-
+	
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	TObjectPtr<UInteractComponent> InteractComponent;
+	
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	float DeathTimerTime = 5.f;
 private:

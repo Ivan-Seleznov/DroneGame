@@ -40,6 +40,14 @@ void UHealthComponent::SetHealth(float NewHealth)
 	
 	CurrentHealth = FMath::Clamp(NewHealth,0.f,MaxHealth);
 
+	if (PrevHealth != CurrentHealth)
+	{
+		if (OnHealthChangedDelegate.IsBound())
+		{
+			OnHealthChangedDelegate.Broadcast(PrevHealth,CurrentHealth,this);
+		}
+	}
+	
 	if (CurrentHealth <= 0.f)
 	{
 		bIsOutOfHealth = true;

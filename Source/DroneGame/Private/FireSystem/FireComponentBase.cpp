@@ -19,7 +19,7 @@ void UFireComponentBase::AddAmmo(float AmmoToAdd)
 
 bool UFireComponentBase::IsEnoughAmmo() const
 {
-	return bShouldUseAmmo && CurrentAmmoCount > 0;
+	return !bShouldUseAmmo || CurrentAmmoCount > 0;
 }
 
 void UFireComponentBase::BeginPlay()
@@ -31,7 +31,7 @@ void UFireComponentBase::BeginPlay()
 
 bool UFireComponentBase::CanFire() const
 {
-	return IsFireRateValid();
+	return IsFireRateValid() && IsEnoughAmmo();
 }
 
 bool UFireComponentBase::IsFireRateValid() const
@@ -61,6 +61,7 @@ bool UFireComponentBase::TryFire(const FVector& Start, const FVector& End)
 	{
 		Fire(Start,End);
 		UpdateFiringTime();
+		UpdateAmmoCount();
 	}
 
 	return bCanFire;
@@ -71,4 +72,15 @@ void UFireComponentBase::UpdateFiringTime()
 	const UWorld* World = GetWorld();
 	check(World);
 	TimeLastFired = World->GetTimeSeconds();
+}
+
+void UFireComponentBase::UpdateAmmoCount()
+{
+	const int32 PrevAmmoCount = CurrentAmmoCount;
+	CurrentAmmoCount--;
+
+	if (OnAmmoCountChangedDelegate.IsBound())
+	{
+		OnAmmoCountChangedDelegate.Broadcast(PrevAmmoCount,CurrentAmmoCount);
+	}
 }

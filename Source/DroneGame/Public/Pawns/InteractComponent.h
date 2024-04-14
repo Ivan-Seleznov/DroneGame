@@ -16,6 +16,12 @@ public:
 	UInteractComponent(const FObjectInitializer& ObjectInitializer);
 
 	void SetCollisionDetectionComponent(UPrimitiveComponent* InComponent) {CollisionDetectionComponent = InComponent;}
+
+	UFUNCTION(BlueprintPure)
+	bool CanInteract() const;
+	
+	UFUNCTION(BlueprintCallable)
+	void SetCanInteract(bool bNewCanInteract) {bCanInteract = bNewCanInteract; }
 	
 protected:
 	virtual void BeginPlay() override;
@@ -24,7 +30,11 @@ protected:
 	void OnComponentBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
 	virtual void OnTryInteract(AActor* ActorToInteract);
+
 private:
 	UPROPERTY()
 	UPrimitiveComponent* CollisionDetectionComponent;
+
+	UPROPERTY(EditDefaultsOnly,meta=(AllowPrivateAccess))
+	bool bCanInteract = true;
 };

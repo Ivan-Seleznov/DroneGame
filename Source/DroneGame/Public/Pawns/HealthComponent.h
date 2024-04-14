@@ -7,6 +7,7 @@
 #include "HealthComponent.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnOutOfHealthDelegate, float, OldHealth, APawn*, OwningPawn);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnHealthChangedDelegate,float,OldHealth,float,NewHealth,UHealthComponent*,HealthComponent);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class DRONEGAME_API UHealthComponent : public UPawnComponent
@@ -16,7 +17,10 @@ class DRONEGAME_API UHealthComponent : public UPawnComponent
 public:
 	UHealthComponent(const FObjectInitializer& ObjectInitializer);
 
+	UPROPERTY(BlueprintAssignable)
 	mutable FOnOutOfHealthDelegate OnOutOfHealthDelegate;
+	UPROPERTY(BlueprintAssignable)
+	mutable FOnHealthChangedDelegate OnHealthChangedDelegate;
 	
 	void AddHealth(float HealthToAdd);
 	void ReduceHealth(float HealthToReduce);
