@@ -26,7 +26,7 @@ public:
 	bool IsPawnVisible() const;
 
 	virtual void OnConstruction(const FTransform& Transform) override;
-	
+	virtual bool IsDead() const override {return bIsDead;}
 protected:
 	virtual void BeginPlay() override;
 
@@ -98,4 +98,5 @@ private:
 	FTimerHandle DetectionTimerHandle;
 
 	bool bIsPawnVisible = false;
+	bool bIsDead = false;
 };

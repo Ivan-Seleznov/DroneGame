@@ -40,6 +40,8 @@ public:
 	float GetDeathTimerRemaining() const;
 	UFUNCTION(BlueprintPure)
 	bool IsDeathTimerActive() const;
+
+	virtual void OnAllTurretsDestroyed();
 protected:
 	virtual void BeginPlay() override;
 	void OnDeathTimerFinished();
@@ -62,6 +64,14 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,meta=(AllowPrivateAccess))
 	TSubclassOf<UUserWidget> DeathWidgetClass;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,meta=(AllowPrivateAccess))
+	TSubclassOf<UUserWidget> VictoryWidgetClass;
+	UPROPERTY()
+	UUserWidget* VictoryWidget;
+	
 	UPROPERTY()
 	UUserWidget* DeathWidget;
+
+	bool IsPlayerWon;
 };

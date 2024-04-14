@@ -5,9 +5,15 @@
 #include "DroneGameLogs.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
+#include "Pawns/DamagablePawn.h"
 
 void ADroneGamePlayerController::StartDeath()
 {
+	if (IsPlayerWon)
+	{
+		return;
+	}
+	
 	FTimerManager& TimerManager = GetWorld()->GetTimerManager();
 	if (TimerManager.IsTimerActive(DeathTimerHandle))
 	{
@@ -48,6 +54,31 @@ float ADroneGamePlayerController::GetDeathTimerRemaining() const
 bool ADroneGamePlayerController::IsDeathTimerActive() const
 {
 	return GetWorld()->GetTimerManager().IsTimerActive(DeathTimerHandle);
+}
+
+void ADroneGamePlayerController::OnAllTurretsDestroyed()
+{
+	if (const IDamageablePawn* DamageablePawn = Cast<IDamageablePawn>(GetPawn()))
+	{
+		if (DamageablePawn->IsDead())
+		{
+			return;
+		}
+	}
+
+	IsPlayerWon = true;
+	if (PlayerHUDWidget)
+	{
+		PlayerHUDWidget->RemoveFromParent();
+	}
+	
+	if (VictoryWidgetClass)
+	{
+		SetInputMode(FInputModeUIOnly());
+		bShowMouseCursor = true;
+		VictoryWidget = CreateWidget<UUserWidget>(this,VictoryWidgetClass);
+		VictoryWidget->AddToViewport();	
+	}
 }
 
 void ADroneGamePlayerController::BeginPlay()

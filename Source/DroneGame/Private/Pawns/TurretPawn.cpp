@@ -5,6 +5,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 #include "FireSystem/ProjectileFireComponent.h"
+#include "GameModes/DroneGameGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Pawns/DamageComponent.h"
@@ -76,6 +77,7 @@ void ATurretPawn::OnPawnDetectionSphereBeginOverlap(UPrimitiveComponent* Overlap
 
 void ATurretPawn::OnOutOfHealth(float OldHealth, APawn* OwningPawn)
 {
+	bIsDead = true;
 	DestroyTurret();
 }
 
@@ -130,6 +132,10 @@ void ATurretPawn::SpawnDestroyVisuals()
 
 void ATurretPawn::DestroyTurret()
 {
+	if (ADroneGameGameModeBase* DroneGameGameModeBase = Cast<ADroneGameGameModeBase>(UGameplayStatics::GetGameMode(this)))
+	{
+		DroneGameGameModeBase->OnTurretDestroyed();
+	}
 	SpawnDestroyVisuals();
 	Destroy();
 }

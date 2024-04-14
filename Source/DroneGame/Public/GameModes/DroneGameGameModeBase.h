@@ -20,7 +20,14 @@ public:
 	virtual void BeginPlay() override;
 	
 	APawn* RespawnPawn();
+	void OnTurretDestroyed();
+
 private:
 	UPROPERTY()
 	TArray<AActor*> PlayerStarts;
+
+	UPROPERTY()
+	TArray<AActor*> Turrets;
+
+	int32 TurretsCount;
 };

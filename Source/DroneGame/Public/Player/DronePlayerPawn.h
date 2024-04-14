@@ -31,9 +31,9 @@ public:
 	virtual void ReceiveDamage(float DamageToReceive,AActor* DamageCauser) override;
 	UFUNCTION(BlueprintCallable)
 	virtual UDamageComponent* GetDamageComponent() const override;
-
+	
 	UFUNCTION(BlueprintPure)
-	bool IsDead() const {return bIsDead;}
+	virtual bool IsDead() const override {return bIsDead;}
 protected:
 	virtual void BeginPlay() override;
 

@@ -26,4 +26,6 @@ public:
 	virtual UDamageComponent* GetDamageComponent() const = 0;
 
 	virtual void ReceiveDamage(float DamageToReceive,AActor* DamageCauser) = 0;
+
+	virtual bool IsDead() const = 0;
 };
