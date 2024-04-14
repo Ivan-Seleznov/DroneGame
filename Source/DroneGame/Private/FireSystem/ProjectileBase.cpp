@@ -23,8 +23,6 @@ AProjectileBase::AProjectileBase()
 	ProjectileMovementComponent->MaxSpeed = 3000.0f;
 	ProjectileMovementComponent->ProjectileGravityScale = 0.7f;
 	
-	SphereCollisionComponent->OnComponentHit.AddDynamic(this,&ThisClass::OnProjectileHit);
-	
 	PrimaryActorTick.bCanEverTick = true;
 }
 
@@ -35,11 +33,11 @@ void AProjectileBase::BeginPlay()
 	if (SphereCollisionComponent)
 	{
 		SphereCollisionComponent->IgnoreActorWhenMoving(GetOwner(),true);
-		SphereCollisionComponent->OnComponentHit.AddDynamic(this,&ThisClass::OnProjectileHit);
+		SphereCollisionComponent->OnComponentHit.AddDynamic(this,&ThisClass::OnHit);
 	}
 }
 
-void AProjectileBase::OnProjectileHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
+void AProjectileBase::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (OtherActor != this && OtherActor != GetOwner())
