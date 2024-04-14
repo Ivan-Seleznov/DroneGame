@@ -67,6 +67,11 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	TObjectPtr<UDamageComponent> DamageComponent;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	TObjectPtr<UParticleSystem> DestroyParticles;
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	TObjectPtr<USoundBase> DestroySound;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="PawnDetection")
 	float PawnDetectionRadius = 5000.f;
@@ -84,7 +89,9 @@ protected:
 	APawn* CurrentPawn;
 
 	void CleanCurrentPawn();
+	virtual void SpawnDestroyVisuals();
 private:
+	void DestroyTurret();
 	void OnPawnDetectionTimerEnd();
 	
 	UPROPERTY()

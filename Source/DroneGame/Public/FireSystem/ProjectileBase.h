@@ -40,4 +40,7 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	TObjectPtr<UParticleSystem> HitParticles;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	TObjectPtr<USoundBase> HitSound;
 };

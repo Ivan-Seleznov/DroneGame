@@ -48,14 +48,22 @@ void AProjectileBase::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActo
         }
 	}
 	
-	if (HitParticles && Hit.IsValidBlockingHit())
+	if (Hit.IsValidBlockingHit())
 	{
-		FTransform SpawnTransform;
-		SpawnTransform.SetLocation(Hit.Location);
-		SpawnTransform.SetScale3D(FVector(1,1,1));
-		SpawnTransform.SetRotation(Hit.Location.Rotation().Quaternion());
 		
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),HitParticles,SpawnTransform);
+		if (HitParticles)
+		{
+			FTransform SpawnTransform;
+			SpawnTransform.SetLocation(Hit.Location);
+			SpawnTransform.SetScale3D(FVector(1,1,1));
+			SpawnTransform.SetRotation(Hit.Location.Rotation().Quaternion());
+			
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),HitParticles,SpawnTransform);
+		}
+		if (HitSound)
+		{
+			UGameplayStatics::SpawnSoundAtLocation(GetWorld(),HitSound,GetActorLocation(),GetActorRotation());
+		}
 	}
 	DestroyProjectile();
 }

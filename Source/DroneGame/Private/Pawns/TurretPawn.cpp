@@ -5,6 +5,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 #include "FireSystem/ProjectileFireComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Pawns/DamageComponent.h"
 #include "Pawns/HealthComponent.h"
@@ -75,9 +76,7 @@ void ATurretPawn::OnPawnDetectionSphereBeginOverlap(UPrimitiveComponent* Overlap
 
 void ATurretPawn::OnOutOfHealth(float OldHealth, APawn* OwningPawn)
 {
-	//TODO visual effects, sound, player state
-	
-	Destroy();
+	DestroyTurret();
 }
 
 bool ATurretPawn::IsPawnLost() const
@@ -115,6 +114,24 @@ void ATurretPawn::CleanCurrentPawn()
 	}
 	CurrentPawn = nullptr;
 	bIsPawnVisible = false;
+}
+
+void ATurretPawn::SpawnDestroyVisuals()
+{
+	if (DestroyParticles && TurretCapsuleCollision)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),DestroyParticles,TurretCapsuleCollision->GetComponentLocation() - TurretCapsuleCollision->GetScaledCapsuleHalfHeight(),GetActorRotation());
+	}
+	if (DestroySound)
+	{
+		UGameplayStatics::SpawnSoundAtLocation(GetWorld(),DestroySound,GetActorLocation(),GetActorRotation());
+	}
+}
+
+void ATurretPawn::DestroyTurret()
+{
+	SpawnDestroyVisuals();
+	Destroy();
 }
 
 void ATurretPawn::OnPawnDetectionTimerEnd()
