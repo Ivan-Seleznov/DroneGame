@@ -78,6 +78,21 @@ bool UDroneMovementComponent::IsVelocityDown() const
 	return ComponentToMove ? (ComponentToMove->GetComponentVelocity() | FVector::DownVector) < 0.f : false;
 }
 
+void UDroneMovementComponent::DisableAllMovement()
+{
+	bEnableMovement = false;
+	if (ThrusterComponent)
+	{
+		CurrentThrottle = 0.f;
+		ThrusterComponent->ThrustStrength = 0.f;
+	}
+}
+
+void UDroneMovementComponent::EnableMovement()
+{
+	bEnableMovement = true;
+}
+
 void UDroneMovementComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -112,6 +127,13 @@ void UDroneMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType
                                             FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	if (!bEnableMovement)
+	{
+		ThrottleInput = 0.f;
+		MoveInput = FVector::ZeroVector;
+		return;
+	}
 	
 	if (!ThrusterComponent || !ComponentToMove)
 	{
@@ -132,7 +154,5 @@ void UDroneMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType
 	
 	ThrottleInput = 0.f;
 	MoveInput = FVector::ZeroVector;
-
-	
 }
 

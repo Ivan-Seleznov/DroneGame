@@ -4,12 +4,17 @@
 
 #include "DroneGameLogs.h"
 #include "Camera/CameraComponent.h"
+#include "Components/BoxComponent.h"
 #include "FireSystem/ProjectileBase.h"
 #include "FireSystem/ProjectileFireComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GameModes/DroneGameGameModeBase.h"
 #include "Input/BindInputComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Movement/DroneMovementComponent.h"
 #include "Pawns/DroneDamageComponent.h"
 #include "Pawns/HealthComponent.h"
+#include "Player/DroneGamePlayerController.h"
 
 ADronePlayerPawn::ADronePlayerPawn()
 {
@@ -58,11 +63,11 @@ void ADronePlayerPawn::Fire()
 	ProjectileFireComponent->TryFire(ProjectileSpawnPoint->GetComponentLocation(),CameraComponent->GetForwardVector());
 }
 
-void ADronePlayerPawn::ReceiveDamage(float DamageToReceive)
+void ADronePlayerPawn::ReceiveDamage(float DamageToReceive,AActor* DamageCauser)
 {
 	if (DamageComponent)
 	{
-		DamageComponent->ReceiveDamage(DamageToReceive);	
+		DamageComponent->ReceiveDamage(DamageToReceive,DamageCauser);	
 	}
 }
 
@@ -71,12 +76,37 @@ UDamageComponent* ADronePlayerPawn::GetDamageComponent() const
 	return DamageComponent;
 }
 
+void ADronePlayerPawn::OnDeathFinished()
+{
+}
+
 void ADronePlayerPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (DamageComponent)
+	check(DamageComponent);
+	DamageComponent->SetHealthComponent(HealthComponent);
+
+	check(HealthComponent);
+	HealthComponent->OnOutOfHealthDelegate.AddDynamic(this,&ThisClass::OnOutOfHealth);
+}
+
+void ADronePlayerPawn::StartDeath()
+{
+	ADroneGamePlayerController* DroneGamePlayerController = Cast<ADroneGamePlayerController>(GetController());
+	if (!DroneGamePlayerController)
 	{
-		DamageComponent->SetHealthComponent(HealthComponent);
+		return;
 	}
+
+	check(DroneMovementComponent);
+	DroneMovementComponent->DisableAllMovement();
+	
+	bIsDead = true;
+	DroneGamePlayerController->StartDeath();
+}
+
+void ADronePlayerPawn::OnOutOfHealth(float OldHealth, APawn* OwningPawn)
+{
+	StartDeath();
 }

@@ -28,12 +28,18 @@ public:
 	virtual void Fire();
 	
 	UFUNCTION(BlueprintCallable)
-	virtual void ReceiveDamage(float DamageToReceive) override;
+	virtual void ReceiveDamage(float DamageToReceive,AActor* DamageCauser) override;
 	UFUNCTION(BlueprintCallable)
 	virtual UDamageComponent* GetDamageComponent() const override;
+
+	UFUNCTION(BlueprintPure)
+	bool IsDead() const {return bIsDead;}
 	
+	virtual void OnDeathFinished();
 protected:
 	virtual void BeginPlay() override;
+
+	virtual void StartDeath();
 	
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	TObjectPtr<USpringArmComponent> SpringArmComponent;
@@ -54,4 +60,12 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, meta=(AllowPrivateAccess=true))
 	TObjectPtr<USceneComponent> ProjectileSpawnPoint;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
+	float DeathTimerTime = 5.f;
+private:
+	UFUNCTION()
+	void OnOutOfHealth(float OldHealth, APawn* OwningPawn);
+
+	bool bIsDead = false;
 };

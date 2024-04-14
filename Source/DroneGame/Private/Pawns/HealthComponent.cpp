@@ -40,8 +40,12 @@ void UHealthComponent::SetHealth(float NewHealth)
 	
 	CurrentHealth = FMath::Clamp(NewHealth,0.f,MaxHealth);
 
-	if (CurrentHealth <= 0.f && OnOutOfHealthDelegate.IsBound())
+	if (CurrentHealth <= 0.f)
 	{
-		OnOutOfHealthDelegate.Broadcast(NewHealth,GetPawn<APawn>());
+		bIsOutOfHealth = true;
+		if (OnOutOfHealthDelegate.IsBound())
+		{
+			OnOutOfHealthDelegate.Broadcast(NewHealth,GetPawn<APawn>());
+		}
 	}
 }

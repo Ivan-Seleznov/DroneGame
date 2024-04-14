@@ -25,5 +25,5 @@ class DRONEGAME_API IDamageablePawn
 public:
 	virtual UDamageComponent* GetDamageComponent() const = 0;
 
-	virtual void ReceiveDamage(float DamageToReceive) = 0;
+	virtual void ReceiveDamage(float DamageToReceive,AActor* DamageCauser) = 0;
 };

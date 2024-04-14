@@ -46,7 +46,7 @@ void AProjectileBase::OnProjectileHit(UPrimitiveComponent* HitComponent, AActor*
 	{
 		if (IDamageablePawn* DamageablePawn = Cast<IDamageablePawn>(OtherActor))
         {
-        	DamageablePawn->ReceiveDamage(ProjectileDamage);
+        	DamageablePawn->ReceiveDamage(ProjectileDamage,GetOwner());
         }
 	}
 	

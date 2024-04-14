@@ -7,6 +7,7 @@
 #include "DroneGameGameModeBase.generated.h"
 
 
+class ADronePlayerPawn;
 /**
  * DroneGame Base GameMode class 
  */
@@ -14,5 +15,12 @@ UCLASS()
 class DRONEGAME_API ADroneGameGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+
+public:
+	virtual void BeginPlay() override;
 	
+	APawn* RespawnPawn();
+private:
+	UPROPERTY()
+	TArray<AActor*> PlayerStarts;
 };

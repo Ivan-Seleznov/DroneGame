@@ -9,18 +9,22 @@ UDamageComponent::UDamageComponent(const FObjectInitializer& ObjectInitializer) 
 {
 }
 
-void UDamageComponent::ReceiveDamage(float DamageToReceive)
+void UDamageComponent::ReceiveDamage(float DamageToReceive,AActor* DamageCauser)
 {
 	if (!HealthComponent)
 	{
 		DEBUG_LOG("DamageComponent requires HealthComponent")
 		return;
 	}
-	
+
+	if (DamageCauser)
+	{
+		LastKnownDamageCauser = DamageCauser;
+	}
 	HealthComponent->ReduceHealth(DamageToReceive);
 }
 
-void UDamageComponent::ReceiveMaxDamage()
+void UDamageComponent::ReceiveMaxDamage(AActor* DamageCauser)
 {
 	if (!HealthComponent)
 	{
@@ -28,5 +32,9 @@ void UDamageComponent::ReceiveMaxDamage()
 		return;
 	}
 
+	if (DamageCauser)
+	{
+		LastKnownDamageCauser = DamageCauser;
+	}
 	HealthComponent->ReduceHealth(HealthComponent->GetMaxHealth());
 }

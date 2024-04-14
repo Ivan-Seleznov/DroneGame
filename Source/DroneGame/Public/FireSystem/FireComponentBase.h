@@ -30,6 +30,12 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	bool GetShouldUseAmmo() const {return bShouldUseAmmo;}
+	
+	float GetCurrentAmmoCount() const {return CurrentAmmoCount;}
+	UFUNCTION(BlueprintCallable)
+	void AddAmmo(float AmmoToAdd);
+
+	bool IsEnoughAmmo() const;
 protected:
 	virtual void BeginPlay() override;
 
@@ -38,6 +44,8 @@ protected:
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	float FireRate = 2.0f;
 
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly, meta=(AllowPrivateAccess))
+	int32 StartAmmoCount = 100;
 private:
 	void UpdateFiringTime();
 
@@ -45,5 +53,8 @@ private:
 
 	UPROPERTY(EditDefaultsOnly,meta=(AllowPrivateAccess))
 	bool bShouldUseAmmo = true;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,meta=(AllowPrivateAccess))
+	int32 CurrentAmmoCount = 0;
 };
  

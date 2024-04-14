@@ -27,7 +27,7 @@ protected:
 	TObjectPtr<UCurveFloat> DroneHitDamageSpeedCurve;
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
-	float MaxFlippedOverTime = 3.f;	// time after that pawn will receive max damage, -1 - disable
+	float MaxFlippedOverTime = 3.f;	// time after that pawn will receive max damage, < 0 = disable
 	
 	FVector PrevDroneLoc;
 	float FlippedOverTimeElapsed;

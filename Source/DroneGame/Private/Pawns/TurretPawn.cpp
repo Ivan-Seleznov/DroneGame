@@ -82,12 +82,24 @@ void ATurretPawn::OnOutOfHealth(float OldHealth, APawn* OwningPawn)
 
 bool ATurretPawn::IsPawnLost() const
 {
-	return !CurrentPawn || FVector::Distance(CurrentPawn->GetActorLocation(),PawnDetectionSphere->GetComponentLocation()) > PawnLossRadius;
+	bool bIsPawnDead = false;
+	if (const IDamageablePawn* DamageablePawn = Cast<IDamageablePawn>(CurrentPawn))
+	{
+		if (const UDamageComponent* CurrentPawnDamageComponent = DamageablePawn->GetDamageComponent())
+		{
+			if (const UHealthComponent* CurrentPawnHealthComponent = CurrentPawnDamageComponent->GetHealthComponent())
+			{
+				bIsPawnDead = CurrentPawnHealthComponent->IsOutOfHealth();
+			}
+		}
+	}
+	
+	return !CurrentPawn || bIsPawnDead || FVector::Distance(CurrentPawn->GetActorLocation(),PawnDetectionSphere->GetComponentLocation()) > PawnLossRadius;
 }
 
-void ATurretPawn::ReceiveDamage(float DamageToReceive)
+void ATurretPawn::ReceiveDamage(float DamageToReceive,AActor* DamageCauser)
 {
-	DamageComponent->ReceiveDamage(DamageToReceive);
+	DamageComponent->ReceiveDamage(DamageToReceive,DamageCauser);
 }
 
 UDamageComponent* ATurretPawn::GetDamageComponent() const
@@ -96,7 +108,6 @@ UDamageComponent* ATurretPawn::GetDamageComponent() const
 }
 
 void ATurretPawn::CleanCurrentPawn()
-
 {
 	if (GetWorld()->GetTimerManager().IsTimerActive(DetectionTimerHandle))
 	{

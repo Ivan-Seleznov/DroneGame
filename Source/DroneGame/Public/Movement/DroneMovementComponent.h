@@ -39,6 +39,11 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	bool IsVelocityDown() const;
+	
+	UFUNCTION(BlueprintCallable)
+	void DisableAllMovement();
+	UFUNCTION(BlueprintCallable)
+	void EnableMovement();
 protected:
 	virtual void BeginPlay() override;
 	
@@ -58,7 +63,7 @@ protected:
 	float MinThrottle = -200.f;
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	float MaxThrottle = 200.f;
-	
+
 private:
 	UPROPERTY()
 	UPrimitiveComponent* ComponentToMove;
@@ -70,4 +75,7 @@ private:
 	float ThrottleInput;
 	UPROPERTY(BlueprintReadOnly,meta=(AllowPrivateAccess))
 	FVector MoveInput;
+
+	UPROPERTY(BlueprintReadOnly,meta=(AllowPrivateAccess))
+	bool bEnableMovement = true;
 };

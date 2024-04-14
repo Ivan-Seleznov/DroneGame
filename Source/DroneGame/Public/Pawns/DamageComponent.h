@@ -19,10 +19,15 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetHealthComponent(UHealthComponent* InHealthComp) {HealthComponent = InHealthComp;}
+	UFUNCTION(BlueprintCallable)
+	UHealthComponent* GetHealthComponent() const {return HealthComponent;}
 	
-	void ReceiveDamage(float DamageToReceive);
-	void ReceiveMaxDamage();
+	void ReceiveDamage(float DamageToReceive,AActor* DamageCauser);
+	void ReceiveMaxDamage(AActor* DamageCauser = nullptr);
 protected:
 	UPROPERTY()
 	UHealthComponent* HealthComponent;
+
+	UPROPERTY()
+	AActor* LastKnownDamageCauser;
 };

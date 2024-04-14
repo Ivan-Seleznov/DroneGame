@@ -82,6 +82,6 @@ void UDroneDamageComponent::OnDroneHit(UPrimitiveComponent* HitComponent, AActor
 	
 	if (DroneHitDamageSpeedCurve)
 	{
-		ReceiveDamage(DroneHitDamageSpeedCurve->GetFloatValue(DroneMovementComponent->GetVelocity().GetSafeNormal() | Hit.Normal));
+		ReceiveDamage(DroneHitDamageSpeedCurve->GetFloatValue(DroneMovementComponent->GetVelocity().GetSafeNormal() | Hit.Normal),nullptr);
 	}
 }

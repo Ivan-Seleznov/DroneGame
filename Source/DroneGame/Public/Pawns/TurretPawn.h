@@ -40,7 +40,7 @@ protected:
 	bool IsPawnLost() const;
 
 	UFUNCTION(BlueprintCallable)
-	virtual void ReceiveDamage(float DamageToReceive) override;
+	virtual void ReceiveDamage(float DamageToReceive,AActor* DamageCauser) override;
 	UFUNCTION(BlueprintPure)
 	virtual UDamageComponent* GetDamageComponent() const override;
 	

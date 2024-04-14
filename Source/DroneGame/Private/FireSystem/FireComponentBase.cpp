@@ -12,9 +12,21 @@ void UFireComponentBase::Fire(const FVector& StartLocation, const FVector& Direc
 {
 }
 
+void UFireComponentBase::AddAmmo(float AmmoToAdd)
+{
+	CurrentAmmoCount += AmmoToAdd;
+}
+
+bool UFireComponentBase::IsEnoughAmmo() const
+{
+	return bShouldUseAmmo && CurrentAmmoCount > 0;
+}
+
 void UFireComponentBase::BeginPlay()
 {
 	Super::BeginPlay();
+
+	CurrentAmmoCount = StartAmmoCount >= 0 ? StartAmmoCount : 0;
 }
 
 bool UFireComponentBase::CanFire() const

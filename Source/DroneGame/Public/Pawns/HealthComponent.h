@@ -26,6 +26,8 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	float GetHealthPercentage() const;
+
+	bool IsOutOfHealth() const {return bIsOutOfHealth;}
 protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	float MaxHealth = 100.f;
@@ -37,4 +39,7 @@ private:
 	
 	UPROPERTY(BlueprintReadOnly,meta=(AllowPrivateAccess))
 	float CurrentHealth;
+
+	UPROPERTY(BlueprintReadOnly,meta=(AllowPrivateAccess))
+	bool bIsOutOfHealth = false;
 };
