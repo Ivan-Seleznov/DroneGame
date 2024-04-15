@@ -9,5 +9,5 @@ Unreal Engine 5 game where you control an fpv drone and have to destroy all turr
   <li>Fire - Left Mouse Button</li>
   <li>Switch view mode - TAB</li>
 </ul>
-[![Image](https://github.com/Ivan-Seleznov/DroneGame/assets/87178217/4b6645eb-37ac-44a6-8d0d-909b31008285)]]
+![Image](https://imgur.com/N5Le6lH)
 
