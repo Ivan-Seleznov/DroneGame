@@ -1,5 +1,5 @@
 # DroneGame
-Unreal Engine 5 game where you control an fpv drone and have to destroy all turrets
+Unreal Engine 5 game where you control an fpv drone and have to destroy all turrets.
 <a href="https://drive.google.com/file/d/1fzHQk_c-v2oSa64tc9VGHIAVOqcNxFJ2/view?usp=sharing">Build</a>
 <h3>Controls:</h3>
 <ul>
