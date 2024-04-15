@@ -20,9 +20,10 @@ void AHealthBonusItem::Interact(APawn* InteractingPawn)
 		return;
 	}
 
+	const bool bHadMaxHealth = FMath::IsNearlyEqual(PawnHealthComponent->GetCurrentHealth(), PawnHealthComponent->GetMaxHealth());
 	PawnHealthComponent->AddHealth(HealthToAdd);
 
-	if (bAlwaysDestroy || !FMath::IsNearlyEqual(PawnHealthComponent->GetCurrentHealth(), PawnHealthComponent->GetMaxHealth()))
+	if (bAlwaysDestroy || !bHadMaxHealth)
 	{
 		DestroyItem();
 	}
