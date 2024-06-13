@@ -3,6 +3,7 @@
 
 .idea/
 Platforms/HoloLens
+.vsconfig
 
 # Compiled Object files
 *.slo
