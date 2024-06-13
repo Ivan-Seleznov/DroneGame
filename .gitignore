@@ -2,6 +2,7 @@
 .vs/
 
 .idea/
+Platforms/HoloLens
 
 # Compiled Object files
 *.slo
